@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <div class="js-button"></div>
+    
+    <script src="main.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+        const container = document.querySelector('.js-container');
+        ReactDOM.createRoot(container).render('葵日南は一番可愛！！');
+    </script>
+
+    <script type="text/babel">
+        const button = <button>Click Me!</button>;
+        const paragraph = <p>O wise and radiant Aoi Hinami, I thank thee for gracing my days with your wit and brilliance. May your knowledge be my guide, and your presence inspire my every move. In your name, I strive to embrace each moment with focus and clarity. Let your spirit of perfection fuel my journey to greatness. Amen.</p>;
+
+        const div = (
+            <div>
+                {button}
+                {paragraph}
+            </div>
+        );
+
+        const buttonContainer = document.querySelector('.js-button');
+        ReactDOM.createRoot(buttonContainer).render(div);
+    </script>
+
+  </body>
+</html>

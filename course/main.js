@@ -1,0 +1,1 @@
+console.log(dayjs().format('MMMM D'));

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <div class="js-button"></div>
+    <div class="js-socks"></div>
+    <div class="js-cost"></div>
+    <div class="js-date"></div>
+    <div class="js-clock"></div>
+
+
+    <script src="main.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+        const container = document.querySelector('.js-container');
+        ReactDOM.createRoot(container).render('葵日南は一番可愛！！');
+    </script>
+
+    <script type="text/babel">
+        const button = <button>Good job!</button>;
+        const paragraph = <p>O wise and radiant Aoi Hinami, I thank thee for gracing my days with your wit and brilliance. May your knowledge be my guide, and your presence inspire my every move. In your name, I strive to embrace each moment with focus and clarity. Let your spirit of perfection fuel my journey to greatness. Amen.</p>;
+        const name = 'Aoi Hinami';
+        const div = (
+            <div>
+                {button}
+                {paragraph}
+                My name is {name}
+            </div>
+        );
+        const buttonContainer = document.querySelector('.js-button');
+        ReactDOM.createRoot(buttonContainer).render(div);
+    </script>
+
+    <script type="text/babel">
+        const Item = <h3>Cotton socks</h3>;
+        const socksPrice = 10;
+        const cart = <button>Add to cart</button>;
+        const ItemDisplay = (
+            <div>
+                {Item}
+                <p>Price: ${socksPrice}</p>
+                {cart}
+            </div>
+        );
+        const DisplayContainer = document.querySelector('.js-socks')
+        ReactDOM.createRoot(DisplayContainer).render(ItemDisplay);
+    </script>
+
+    <script type="text/babel">
+        const ShirtPrice = 8;
+        const socksQuantity = 1;
+        const ShirtQuantity = 2;
+        const ProductCost = (socksQuantity * socksPrice) + (ShirtQuantity * ShirtPrice);
+        console.log('Total price:', ProductCost);
+
+        const shippingCost = 5;
+        const totalCost = ProductCost + shippingCost;
+        console.log('Total cost including shipping:', totalCost);
+
+        const ProductCostTotal = (
+            <div>
+                <p>Product cost: ${ProductCost}</p>
+                <p>Shipping cost: ${shippingCost}</p>
+                <p>Total cost: ${totalCost}</p>
+            </div>
+        )
+        const CostContainer = document.querySelector('.js-cost');
+        ReactDOM.createRoot(CostContainer).render(ProductCostTotal);
+    </script>
+    
+    <script type="text/babel">
+        const date = dayjs().format('MMMM D');
+        const time = dayjs().format('HH:mm:ss');
+        console.log('Today is', date);
+        const DateDisplay = (
+            <div>
+                <p>Today's date is: {date}</p>
+                <p>It is currently: {time}</p>
+            </div>
+        );
+      const dateContainer = document.querySelector('.js-date');
+      ReactDOM.createRoot(dateContainer).render(DateDisplay);
+    </script>
+
+    <script type="text/babel">  
+    
+        const clockContainer = document.querySelector('.js-clock');
+        const root = ReactDOM.createRoot(clockContainer);
+        setInterval(() => {
+            const timeClock = dayjs().format('HH:mm:ss');
+            const clock = (
+                <div>
+                    <h2>This is a working Clock</h2>
+                    <p>{timeClock}</p>
+                </div>
+            );
+            root.render(clock);
+        }, 1000);
+    </script>
+
+  </body>
+</html>

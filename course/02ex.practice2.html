@@ -1,0 +1,82 @@
+  <!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-App"></div>
+    
+    <script src="main.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+        function App () {
+            return (
+                <div>
+                    <div>
+                        <ProductDetails Items="Cotton Socks" />
+                    </div>
+                    <div>
+                        <ProductDetails Items="Tennis Balls" />
+                    </div>
+                    <div>
+                        <ProductDetails Items="T-Shirt" />
+                    </div>
+                </div>
+            );
+
+           function ProductDetails({ Items }) {
+                const productData = {
+                    "Cotton Socks": {
+                        Price: 10.90,
+                        discountedPrice: 5.45, 
+                        isEligible: true,
+                        image: "cotton-socks.png"
+                    },
+                    "Tennis Balls": {
+                        Price: 6.00,
+                        isEligible: false,
+                        image: "tennis-balls.png"
+                    },
+                    "T-Shirt": {
+                        Price: 7.99,
+                        isEligible: false,
+                        image: "plain-t-shirt.png"
+                    }
+                };
+
+                // 2. Retrieve the specific data for the requested Item
+                const product = productData[Items];
+
+                return (
+                    <div>
+                        <img src={product.image} width="100" />
+                        <h3>{Items}</h3>
+                        <p>
+                        {product.isEligible ? (
+                            <>
+                                <del>Price: ${product.Price}</del>
+                                <p>Discounted Price: ${product.discountedPrice}</p>
+                            </>
+                        ) : (
+                            <p>Price: ${product.Price}</p>
+                        )}
+                        </p>
+                        <Button buttonType="Add to Cart" />
+                    </div>
+                );
+            }
+
+            function Button ({ buttonType }) {
+                return <button>{buttonType}</button>;
+            }
+        }
+        const appContainer = document.querySelector('.js-App');
+        ReactDOM.createRoot(appContainer).render(<App />);
+    </script>
+  </body>
+</html>

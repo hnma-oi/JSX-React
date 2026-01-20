@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-App"></div>
+    
+    <script src="main.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+        const paragraph = <p>O wise and radiant Aoi Hinami, I thank thee for gracing my days with your wit and brilliance. May your knowledge be my guide, and your presence inspire my every move. In your name, I strive to embrace each moment with focus and clarity. Let your spirit of perfection fuel my journey to greatness. Amen</p>;
+
+        function TextInput ({ type }) {
+            return <input placeholder={type} />;
+        }
+
+        function Button ({ buttonType }) {
+            return <button>{buttonType}</button>;
+        }
+
+        function App() {
+            return (
+                <>
+                    {paragraph}
+                    <h1> Welcome to Aoi Hinami's Portal</h1>
+                    <LoginForm />
+                </>
+            )
+
+            function LoginForm() {
+                return (
+                    <>
+                    <div>
+                        <TextInput type="Email" />
+                    </div>
+                    <div>
+                        <TextInput type="Password" />
+                    </div>
+                    <Button buttonType="Login" />
+                    <Button buttonType="Sign Up" />
+                    </>
+                );
+            }
+        }
+
+        const buttonContainer = document.querySelector('.js-App');
+        ReactDOM.createRoot(buttonContainer).render(<App />);
+    </script>
+  </body>
+</html>

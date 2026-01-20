@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+        function ButtonObject({ count, setCount }) {
+            
+            function handleClick() {
+                setCount(count => count + 1);
+            }
+            function ButtonTemplate() {
+                return (
+                    count === 1 ? (
+                        <button onClick={handleClick}> 
+                            Clicked {count} time
+                        </button>
+                    ) : (
+                        <button onClick={handleClick}> 
+                            Clicked {count} times
+                        </button>
+                    )
+                    
+                );
+            }
+            return (
+                <>
+                        <ButtonTemplate></ButtonTemplate>
+                </>
+            );
+        }
+
+        function ButtonReset({ setCount }) {
+            function handleReset() {
+                setCount(0);
+            }
+            return (
+                <button onClick={handleReset}>Reset</button>
+            );
+        }
+
+        function App () {
+            const [count, setCount] = React.useState(0);
+                return (
+                    <>
+                        <h1>Click Counter</h1>
+                        <ButtonObject count={count} setCount={setCount} />
+                        <ButtonObject count={count} setCount={setCount} />
+                        <ButtonReset setCount={setCount} />
+                    </>
+                );
+        }
+        const container = document.querySelector('.js-container');
+        ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>

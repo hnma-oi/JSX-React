@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AoiBot 葵</title>
+    <style>
+        body {
+            font-family: 'ms mincho';
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .send-button {
+            background-color: purple; 
+            color: white;
+            padding: 12px 20px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .chat-input {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border-width: 1px;
+            font-size: 15px;
+            flex-grow:1;
+        }
+        
+        .chat-container {
+            display:flex;
+            margin-bottom: 20px;
+        }
+
+        .app-container {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            overflow: scroll;
+            scrollbar-width: none;
+             
+        }
+
+        .chat-message-aoi {
+            display: flex;
+            justify-content: left;
+            align-items: start;
+            max-width: 800px;
+        }
+
+        .chat-message-user {
+            display: flex;
+            justify-content: right;
+            align-items: start;
+            max-width: 800px;
+        }
+
+        .chat-text {
+            background-color: rgb(255, 240, 240);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-bottom: 20px;
+        }
+
+        .chat-profile {
+            width: 75px;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src = "https://unpkg.com/supersimpledev/react.js"></script>
+    <script src = "https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src = "https://unpkg.com/supersimpledev/chatbot.js"></script>
+    <script src = "https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+        function ChatInput({ chatMessages, setChatMessages }) {
+            const [inputText, setInputText] = React.useState('');
+            const [isLoading, setIsLoading] = React.useState(false);
+            
+            function saveInputText(event) {
+                setInputText(event.target.value);
+            }
+
+            async function sendMessage() {
+            if (isLoading || inputText === "") {
+                return;
+            }
+            setIsLoading(true);
+
+            const newChatMessages = [
+                ...chatMessages,
+                {
+                    sender: 'ユーザー',
+                    message: inputText,
+                    uuid: crypto.randomUUID()
+                }
+            ];
+
+            setInputText('');
+
+            setChatMessages([
+                ...newChatMessages,
+                {
+                    sender: '葵日南',
+                    message: "少し待ちなさい",
+                    uuid: crypto.randomUUID()
+                }
+            ]);
+            
+            const aoiResponse = await Chatbot.getResponseAsync(inputText);
+            setChatMessages([
+                    ...newChatMessages,
+                    {
+                        sender: '葵日南',
+                        message: aoiResponse,
+                        uuid: crypto.randomUUID()
+                    }
+                ]);
+            setIsLoading(false)
+            }
+
+            function resetInput () {
+                setInputText('')
+            }
+
+            function handleKey (event) {
+                (event.key === 'Enter' && 
+                sendMessage()
+            );
+                (event.key === 'Escape' &&
+                resetInput()
+                )
+            }
+
+            function isEmpty () {
+
+            }
+
+            return (
+                <div className="chat-container">
+                    <input 
+                        placeholder="葵にメッセージを入力ください！" 
+                        size="30" 
+                        onChange={saveInputText}
+                        value={inputText}
+                        onKeyDown={handleKey}
+                        className="chat-input"
+                    />
+                    <button
+                        onClick={sendMessage}
+                        className="send-button"
+                    >送信</button>
+                </div>
+            );
+        }
+
+        function ChatMessage( { message, sender } ) {
+            return (
+                <div className={
+                    sender === 
+                    "葵日南" 
+                    ? "chat-message-aoi" 
+                    : "chat-message-user"
+                }>
+                {sender === "葵日南" && (
+                    <img src={"aoi.jpg"} className="chat-profile" />
+                )}
+                <div className="chat-text">
+                    {sender}: {message}
+                </div>
+                {sender !== "葵日南" && (
+                    <img src={"user.jpg"} className="chat-profile" />
+                )}
+                </div>
+            )
+        }
+            
+        function ChatMessages({ chatMessages }) {
+            const ChatMessagesRef = React.useRef(null);
+            React.useEffect(() => {
+                const containerElem = ChatMessagesRef.current;
+                if (containerElem) {
+                    containerElem.scrollTop = containerElem.scrollHeight
+                }
+            }, [chatMessages]);
+
+
+            return (
+                <div className="chat-messages"
+                        ref={ChatMessagesRef}>
+                    {chatMessages.map((chatMessage) => {
+                        return (
+                            <ChatMessage 
+                                sender={chatMessage.sender}
+                                message={chatMessage.message}
+                                key={chatMessage.uuid}
+                            />
+                        );
+                    })}
+                </div>
+            );
+        }
+
+        function App () {
+                const [chatMessages, setChatMessages] = React.useState([{
+                    sender: "ユーザー", 
+                    message: "葵日南って誰？", 
+                    uuid: crypto.randomUUID()
+                },
+                {
+                    sender: "葵日南", 
+                    message: "こんにちは！私は葵日南チャットボットです。ご質問やお話したいことがあれば、何でも聞いてくださいね！😊",
+                    uuid: crypto.randomUUID()
+                },
+                {
+                    sender: "ユーザー", 
+                    message: "葵の趣味は何ですか？",
+                    uuid: crypto.randomUUID()
+                },
+                {
+                    sender: "葵日南", 
+                    message: "私の趣味はゲーム！特にアタファミが大好きです。あなたはどんなゲームが好きですか？🎮",
+                    uuid: crypto.randomUUID()
+                }]);
+                
+                // const ChatMessageComponent = chats[0];
+                // const setChatMessageComponent = chats[1];
+                // const [ChatMessageComponent, setChatMessageComponent] = chats;
+            
+
+            return (
+                <div className="app-container">
+                    <h1>葵日南チャットボットへようこそ！</h1>
+                    <ChatMessages 
+                        chatMessages={chatMessages}
+                        setChatMessages={setChatMessages} />
+                    <ChatInput 
+                        chatMessages={chatMessages}
+                        setChatMessages={setChatMessages}/>
+                </div>
+            );
+        }
+        const container = document.querySelector('.js-container');
+        ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>

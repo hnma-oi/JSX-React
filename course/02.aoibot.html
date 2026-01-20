@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AoiBot 葵</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src = "https://unpkg.com/supersimpledev/react.js"></script>
+    <script src = "https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+        function ChatInput() {
+            return (
+                <>
+                    <input 
+                        placeholder="葵にメッセージを入力ください！" 
+                        size="30" 
+                    />
+                    <button>送信</button>
+                </>
+            );
+        }
+
+        function ChatMessage( { message, sender } ) {
+            // const { message, sender } = props;
+
+            /* Alternatively we can use Guard (&&) operator within the JSX
+            if (sender === "葵日南") {
+                return (
+                    <div>
+                        <img src={"aoi.jpg"} width="50" />
+                        {message}
+                    </div>
+                );
+            } 
+            */
+
+            return (
+                <div>
+                {sender === "葵日南" && (
+                    <img src={"aoi.jpg"} width="50" />
+                )}
+                {sender}: {message}
+                {sender !== "葵日南" && (
+                    <img src={"user.jpg"} width="50" />
+                )}
+                </div>
+            )
+        }
+
+        function App () {
+            return (
+                <>
+                    <h1>葵日南チャットボットへようこそ！</h1>
+                    <ChatInput />
+                    <ChatMessage 
+                        sender="ユーザー" 
+                        message="葵日南って誰？" 
+                    />
+                    <ChatMessage 
+                        sender="葵日南" 
+                        message="こんにちは！私は葵日南チャットボットです。ご質問やお話したいことがあれば、何でも聞いてくださいね！😊" 
+                    />
+                    <ChatMessage 
+                        sender="ユーザー" 
+                        message="葵の趣味は何ですか？" 
+                    />
+                    <ChatMessage 
+                        sender="葵日南" 
+                        message="私の趣味はゲーム！特にアタファミが大好きです。あなたはどんなゲームが好きですか？🎮" 
+                    />
+                </>
+        );
+        }
+
+        const container = document.querySelector('.js-container');
+        ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>

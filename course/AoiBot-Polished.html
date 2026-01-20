@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AoiBot 葵 - Modern Glass</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ['"MS Mincho"', 'serif'],
+            },
+            colors: {
+              "old-rose": {
+                "50": "#f7eef1", "100": "#efdce2", "200": "#dfb9c5", "300": "#cf96a8",
+                "400": "#bf738b", "500": "#af506e", "600": "#8c4058", "700": "#693042",
+                "800": "#46202c", "900": "#231016", "950": "#180b0f"
+              },
+              "night-bordeaux": {
+                "50": "#fce9ec", "100": "#f9d2d9", "200": "#f3a5b2", "300": "#ed788c",
+                "400": "#e74b65", "500": "#e01f3f", "600": "#b41832", "700": "#871226",
+                "800": "#5a0c19", "900": "#2d060d", "950": "#1f0409"
+              },
+              "rich-mahogany": {
+                "50": "#faeaec", "100": "#f6d5d9", "200": "#ecacb2", "300": "#e3828c",
+                "400": "#d95966", "500": "#d02f3f", "600": "#a62633", "700": "#7d1c26",
+                "800": "#531319", "900": "#2a090d", "950": "#1d0709"
+              },
+              "desert-sand": {
+                "50": "#f6f1ef", "100": "#ede4de", "200": "#dbc9bd", "300": "#c9ad9c",
+                "400": "#b7927b", "500": "#a4775b", "600": "#845f48", "700": "#634736",
+                "800": "#423024", "900": "#211812", "950": "#17110d"
+              },
+              "straw-gold": {
+                "50": "#fbf8e9", "100": "#f7f1d4", "200": "#efe2a9", "300": "#e7d47e",
+                "400": "#dfc653", "500": "#d7b728", "600": "#ac9320", "700": "#816e18",
+                "800": "#564910", "900": "#2b2508", "950": "#1e1a06"
+              }
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      /* Custom Scrollbar Hiding */
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+      .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+      
+      /* Simple Float Animation for Background */
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+        100% { transform: translateY(0px); }
+      }
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-old-rose-950 via-night-bordeaux-950 to-rich-mahogany-950 h-screen w-screen overflow-hidden font-serif text-old-rose-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // --- COMPONENTS ---
+
+        function ChatInput({ chatMessages, setChatMessages }) {
+            const [inputText, setInputText] = React.useState('');
+            const [isLoading, setIsLoading] = React.useState(false);
+            
+            function saveInputText(event) {
+                setInputText(event.target.value);
+            }
+
+            async function sendMessage() {
+                if (isLoading || inputText.trim() === "") return;
+                
+                setIsLoading(true);
+                const currentText = inputText;
+                setInputText(''); // Optimistic clear
+
+                // 1. Add User Message
+                const newChatMessages = [
+                    ...chatMessages,
+                    {
+                        sender: 'ユーザー',
+                        message: currentText,
+                        uuid: crypto.randomUUID()
+                    }
+                ];
+
+                // 2. Add Loading Message
+                setChatMessages([
+                    ...newChatMessages,
+                    {
+                        sender: '葵日南',
+                        message: "thinking...", // Temporary flag
+                        uuid: crypto.randomUUID(),
+                        isLoading: true
+                    }
+                ]);
+                
+                // 3. Get Response
+                const aoiResponse = await Chatbot.getResponseAsync(currentText);
+
+                // 4. Update with Real Message
+                setChatMessages([
+                    ...newChatMessages,
+                    {
+                        sender: '葵日南',
+                        message: aoiResponse,
+                        uuid: crypto.randomUUID()
+                    }
+                ]);
+                setIsLoading(false);
+            }
+
+            function handleKey(event) {
+                if (event.key === 'Enter') sendMessage();
+                if (event.key === 'Escape') setInputText('');
+            }
+
+            return (
+                <div className="p-4 bg-white/5 backdrop-blur-md border-t border-white/10 flex items-center gap-3">
+                    <input 
+                        className="flex-grow bg-black/20 text-white placeholder-old-rose-200/50 rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-old-rose-400/50 transition-all shadow-inner border border-white/5"
+                        placeholder="葵にメッセージを入力..." 
+                        onChange={saveInputText}
+                        value={inputText}
+                        onKeyDown={handleKey}
+                        disabled={isLoading}
+                    />
+                    <button
+                        onClick={sendMessage}
+                        disabled={isLoading}
+                        className={`
+                            px-6 py-3 rounded-full font-bold shadow-lg transition-all transform hover:scale-105 active:scale-95
+                            ${isLoading 
+                                ? "bg-gray-600 text-gray-400 cursor-not-allowed" 
+                                : "bg-gradient-to-r from-old-rose-500 to-night-bordeaux-500 text-white hover:shadow-old-rose-500/40"
+                            }
+                        `}
+                    >
+                        {isLoading ? '...' : '送信'}
+                    </button>
+                </div>
+            );
+        }
+
+        function ChatMessage({ message, sender, isLoading }) {
+            const isAoi = sender === "葵日南";
+
+            return (
+                <div className={`flex w-full mb-6 ${isAoi ? "justify-start" : "justify-end"}`}>
+                    
+                    {/* Aoi Avatar */}
+                    {isAoi && (
+                        <div className="flex-shrink-0 mr-3">
+                            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-old-rose-400/50 shadow-lg relative bg-black/40">
+                                {/* Placeholder if img missing */}
+                                <img src="aoi.jpg" alt="Aoi" className="w-full h-full object-cover" 
+                                     onError={(e) => {e.target.style.display='none'; e.target.parentNode.classList.add('flex', 'items-center', 'justify-center'); e.target.parentNode.innerHTML='🌸'}} />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Message Bubble */}
+                    <div className={`
+                        max-w-[75%] px-5 py-3 text-sm md:text-base shadow-lg backdrop-blur-sm
+                        ${isAoi 
+                            ? "bg-white/10 border border-white/10 text-white rounded-2xl rounded-tl-none" 
+                            : "bg-gradient-to-br from-old-rose-600 to-night-bordeaux-600 text-white border border-white/10 rounded-2xl rounded-tr-none"
+                        }
+                    `}>
+                        <div className="text-xs opacity-50 mb-1 font-sans font-bold tracking-wider">
+                            {sender}
+                        </div>
+                        <div className="leading-relaxed">
+                            {isLoading ? (
+                                <span className="animate-pulse">考え中... 🖊️</span>
+                            ) : message}
+                        </div>
+                    </div>
+
+                    {/* User Avatar */}
+                    {!isAoi && (
+                        <div className="flex-shrink-0 ml-3">
+                            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-night-bordeaux-400/50 shadow-lg bg-black/40">
+                                <img src="user.jpg" alt="User" className="w-full h-full object-cover" 
+                                     onError={(e) => {e.target.style.display='none'; e.target.parentNode.classList.add('flex', 'items-center', 'justify-center'); e.target.parentNode.innerHTML='👤'}} />
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )
+        }
+            
+        function ChatMessages({ chatMessages }) {
+            const bottomRef = React.useRef(null);
+
+            // Auto-scroll to bottom
+            React.useEffect(() => {
+                bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+            }, [chatMessages]);
+
+            return (
+                <div className="flex-grow overflow-y-auto no-scrollbar p-4 md:p-6 space-y-2">
+                    {chatMessages.map((msg) => (
+                        <ChatMessage 
+                            key={msg.uuid}
+                            sender={msg.sender}
+                            message={msg.message}
+                            isLoading={msg.isLoading}
+                        />
+                    ))}
+                    <div ref={bottomRef} />
+                </div>
+            );
+        }
+
+        function App() {
+            const [chatMessages, setChatMessages] = React.useState([
+                { sender: "ユーザー",
+                 message: "葵日南って誰？", 
+                 uuid: crypto.randomUUID() 
+                },
+                { sender: "葵日南", 
+                message: "こんにちは！私は葵日南チャットボットです。ご質問やお話したいことがあれば、何でも聞いてくださいね！😊", 
+                uuid: crypto.randomUUID() 
+                },
+                { sender: "ユーザー", 
+                message: "葵の趣味は何ですか？", 
+                uuid: crypto.randomUUID() 
+                },
+                { sender: "葵日南", 
+                message: "私の趣味はゲーム！特にアタファミが大好きです。あなたはどんなゲームが好きですか？🎮", 
+                uuid: crypto.randomUUID() 
+                }
+            ]);
+
+            return (
+                <div className="relative w-full h-full flex items-center justify-center p-0 md:p-6">
+                    
+                    {/* Background Blobs for Atmosphere */}
+                    <div className="absolute top-10 left-10 w-64 h-64 bg-old-rose-500/20 rounded-full blur-3xl animate-float"></div>
+                    <div className="absolute bottom-10 right-10 w-96 h-96 bg-night-bordeaux-600/20 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+                    
+                    {/* Main Glass Card */}
+                    <div className="
+                        relative z-10 w-full max-w-2xl h-full md:h-[90vh] 
+                        bg-black/20 backdrop-blur-xl border border-white/10 
+                        shadow-2xl md:rounded-3xl flex flex-col overflow-hidden
+                    ">
+                        
+                        {/* Header */}
+                        <header className="p-4 bg-white/5 border-b border-white/10 flex items-center justify-between backdrop-blur-md">
+                            <div className="flex items-center gap-3">
+                                <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
+                                <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                                <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
+                            </div>
+                            <h1 className="text-lg font-serif font-bold text-old-rose-100 tracking-widest drop-shadow-sm">
+                                葵日南 <span className="text-xs opacity-50 ml-1">AI CHAT</span>
+                            </h1>
+                            <div className="w-10"></div> {/* Spacer for centering */}
+                        </header>
+
+                        {/* Messages Area */}
+                        <ChatMessages chatMessages={chatMessages} />
+
+                        {/* Input Area */}
+                        <ChatInput 
+                            chatMessages={chatMessages}
+                            setChatMessages={setChatMessages} 
+                        />
+                    </div>
+                </div>
+            );
+        }
+
+        const container = document.getElementById('root');
+        ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
