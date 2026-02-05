@@ -5,9 +5,10 @@ import './HomePage.css';
 export function HomePage() {
     return (
         <>
+            <title>Homepage</title>
             <div className="header">
                 <div className="left-section">
-                    <a href="index.html" className="header-link">
+                    <a href="/" className="header-link">
                     <img className="logo"
                         src="images/logo-white.png" />
                     <img class="mobile-logo"
@@ -24,12 +25,12 @@ export function HomePage() {
                 </div>
 
                 <div class="right-section">
-                    <a class="orders-link header-link" href="orders.html">
+                    <a class="orders-link header-link" href="/orders">
 
                     <span class="orders-text">Orders</span>
                     </a>
 
-                    <a class="cart-link header-link" href="checkout.html">
+                    <a class="cart-link header-link" href="/checkout">
                     <img class="cart-icon" src="images/icons/cart-icon.png" />
                     <div class="cart-quantity">3</div>
                     <div class="cart-text">Cart</div>
