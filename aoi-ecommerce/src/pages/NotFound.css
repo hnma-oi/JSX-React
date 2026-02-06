@@ -1,0 +1,159 @@
+/* src/NotFound.css */
+
+/* --- 1. Main Layout & Background --- */
+.not-found-container {
+  min-height: 100vh;
+  width: 100vw;
+  /* Gradient: Old Rose 950 -> Night Bordeaux 950 -> Rich Mahogany 950 */
+  background: linear-gradient(to bottom right, #180b0f, #1f0409, #1d0709);
+  font-family: "MS Mincho", serif;
+  color: #f7eef1; /* Old Rose 50 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- 2. Floating Blobs --- */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px); /* blur-3xl */
+  opacity: 0.2;
+  animation: float 6s ease-in-out infinite;
+}
+
+.blob-1 {
+  top: 2.5rem;
+  left: 2.5rem;
+  width: 16rem;
+  height: 16rem;
+  background-color: #af506e; /* Old Rose 500 */
+}
+
+.blob-2 {
+  bottom: 2.5rem;
+  right: 2.5rem;
+  width: 24rem;
+  height: 24rem;
+  background-color: #b41832; /* Night Bordeaux 600 */
+  animation-delay: 1s;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+/* --- 3. Glass Card --- */
+.glass-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 32rem; /* max-w-lg */
+  padding: 2.5rem;
+  
+  /* The Glass Effect */
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(24px); /* backdrop-blur-xl */
+  -webkit-backdrop-filter: blur(24px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-radius: 1.5rem; /* rounded-3xl */
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: scale(1.01);
+}
+
+/* --- 4. Avatar Styles --- */
+.avatar-container {
+  width: 6rem;
+  height: 6rem;
+  margin-bottom: 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  /* Border: Old Rose 400 with 30% opacity */
+  border: 4px solid rgba(191, 115, 139, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  filter: grayscale(100%);
+  transition: all 0.5s ease;
+}
+
+.glass-card:hover .avatar-img {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* --- 5. Typography --- */
+.title-404 {
+  font-size: 4.5rem; /* text-7xl */
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  
+  /* Text Gradient Logic */
+  background: linear-gradient(to right, #dfb9c5, #ed788c); /* Old Rose 200 -> Night Bordeaux 300 */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: bold;
+  color: #efdce2; /* Old Rose 100 */
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: rgba(223, 185, 197, 0.8); /* Old Rose 200 with 80% opacity */
+  margin-bottom: 2rem;
+  line-height: 1.625;
+  font-size: 1rem;
+}
+
+/* --- 6. Button Styles --- */
+.home-button {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px; /* Full rounded */
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  
+  /* Gradient Button */
+  background: linear-gradient(to right, #af506e, #e01f3f); /* Old Rose 500 -> Night Bordeaux 500 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  transition: all 0.2s ease;
+}
+
+.home-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 25px -5px rgba(175, 80, 110, 0.4); /* Shadow color based on Old Rose */
+}
+
+.home-button:active {
+  transform: scale(0.95);
+}
