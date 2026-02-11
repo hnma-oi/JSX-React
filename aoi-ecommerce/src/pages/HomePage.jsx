@@ -28,7 +28,7 @@ export function HomePage( { cart }) {
 
           {products.map((product) => {
             return (
-              <div className="product-container">
+              <div key={product.id} className="product-container">
                 <div className="product-image-container">
                   <img className="product-image"
                     src={product.image} />
