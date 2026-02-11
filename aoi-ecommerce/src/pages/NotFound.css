@@ -109,7 +109,7 @@
   font-weight: bold;
   margin-bottom: 0.5rem;
   line-height: 1;
-  
+
   /* Text Gradient Logic */
   background: linear-gradient(to right, #dfb9c5, #ed788c); /* Old Rose 200 -> Night Bordeaux 300 */
   -webkit-background-clip: text;
