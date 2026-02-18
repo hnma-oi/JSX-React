@@ -153,9 +153,7 @@ export function CheckoutPage({ cart }) {
                                     Place your order
                                 </button>
                             </>
-
                         )}
-
                     </div>
                 </div>
             </div>
