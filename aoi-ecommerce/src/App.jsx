@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router'
-import { HomePage } from './pages/Homepage'
+import { HomePage } from './pages/home/HomePage.jsx'
 import { CheckoutPage } from './pages/checkout/CheckoutPage.jsx'
-import { OrdersPage } from './pages/Orders.jsx'
-import { TrackingPage } from './pages/Tracking.jsx'
-import { NotFound } from './pages/NotFound.jsx'
+import { OrdersPage } from './pages/orders/Orders.jsx'
+import { TrackingPage } from './pages/tracking/TrackingPage.jsx'
+import { NotFound } from './pages/notfound/NotFound.jsx'
 import './App.css'
 
 function App() {

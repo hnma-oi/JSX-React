@@ -1,5 +1,5 @@
 import './NotFound.css';
-import aoiPicture from '../assets/aoi.jpg';
+import aoiPicture from '../../assets/aoi.jpg';
 
 export function NotFound() {
     return (
