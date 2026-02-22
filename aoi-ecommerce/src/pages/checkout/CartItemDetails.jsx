@@ -22,6 +22,7 @@ export function CartItemDetails({ cartItem, deliveryOptions, loadCart}) {
                         {formatMoney(cartItem.product.priceCents)}
                     </div>
                     <div className="product-quantity">
+                        <input type="text" className="quantity-input"/>
                         <span>
                             Quantity: <span className="quantity-label">{cartItem.quantity}</span>
                         </span>
